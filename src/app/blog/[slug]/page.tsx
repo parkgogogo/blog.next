@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import TableOfContentsWrapper from '@/components/TableOfContentsWrapper';
-import { getPost } from '@/lib/posts';
+import { getPost, getCategories } from '@/lib/posts';
+import CategorySidebarServer from '@/components/CategorySidebarServer';
 
 export default async function BlogPostPage({
   params,
@@ -12,6 +13,7 @@ export default async function BlogPostPage({
   const slug = decodeURIComponent(rawSlug);
   
   const post = await getPost(slug);
+  const categories = await getCategories();
   
   if (!post) {
     notFound();
@@ -21,21 +23,24 @@ export default async function BlogPostPage({
 
   return (
     <div className="flex">
+      {/* Left Sidebar */}
+      <CategorySidebarServer categories={categories} currentSlug={slug} />
+      
       {/* Main Content */}
       <div className="flex-1 max-w-none">
-        <div className="max-w-4xl mx-auto px-8 py-8">
-          <article className="bg-white shadow-sm rounded-lg overflow-hidden">
-            <div className="px-8 py-8">
+        <div className="max-w-4xl mx-auto px-8 py-12">
+          <article className="bg-transparent">
+            <div className="px-0 py-0">
               {/* Post Header */}
-              <header className="mb-8">
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+              <header className="mb-12">
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="inline-block bg-orange-50 text-orange-700 text-xs font-medium px-3 py-1 rounded-full border border-orange-200">
                     {post.category}
                   </span>
-                  <time className="text-sm text-gray-500">{formattedDate}</time>
+                  <time className="text-sm text-muted">{formattedDate}</time>
                 </div>
                 
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                <h1 className="text-5xl font-display font-light text-foreground mb-6 leading-tight tracking-tight">
                   {post.title}
                 </h1>
                 
@@ -44,7 +49,7 @@ export default async function BlogPostPage({
                     {post.tags.map((tag: string, index: number) => (
                       <span
                         key={index}
-                        className="inline-block bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full"
+                        className="inline-block bg-gray-50 text-gray-600 text-xs font-medium px-3 py-1 rounded-md border border-gray-200"
                       >
                         {tag}
                       </span>
@@ -55,7 +60,7 @@ export default async function BlogPostPage({
 
               {/* Post Content */}
               <div 
-                className="prose prose-lg max-w-none"
+                className="prose prose-lg max-w-none mt-8"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
             </div>
