@@ -7,12 +7,14 @@ interface CategoryItemClientProps {
   category: Category;
   currentSlug?: string;
   level?: number;
+  onItemClick?: () => void;
 }
 
 export default function CategoryItemClient({
   category,
   currentSlug,
   level = 0,
+  onItemClick,
 }: CategoryItemClientProps) {
   const hasSubcategories =
     category.subcategories && category.subcategories.length > 0;
@@ -38,6 +40,7 @@ export default function CategoryItemClient({
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
+              onClick={onItemClick}
               className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                 currentSlug === post.slug
                   ? "bg-gray-100 font-semibold"
@@ -59,6 +62,7 @@ export default function CategoryItemClient({
               category={subcategory}
               currentSlug={currentSlug}
               level={level + 1}
+              onItemClick={onItemClick}
             />
           ))}
         </div>

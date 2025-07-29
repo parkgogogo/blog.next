@@ -7,15 +7,17 @@ import { Category, BlogPostMeta } from '@/types/blog';
 interface CategorySidebarProps {
   categories: Category;
   currentSlug?: string;
+  onItemClick?: () => void;
 }
 
 interface CategoryItemProps {
   category: Category;
   currentSlug?: string;
   level?: number;
+  onItemClick?: () => void;
 }
 
-function CategoryItem({ category, currentSlug, level = 0 }: CategoryItemProps) {
+function CategoryItem({ category, currentSlug, level = 0, onItemClick }: CategoryItemProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const hasSubcategories = category.subcategories && category.subcategories.length > 0;
   const hasPosts = category.posts && category.posts.length > 0;
@@ -57,6 +59,7 @@ function CategoryItem({ category, currentSlug, level = 0 }: CategoryItemProps) {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
+              onClick={onItemClick}
               className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                 currentSlug === post.slug
                   ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-500'
@@ -74,6 +77,7 @@ function CategoryItem({ category, currentSlug, level = 0 }: CategoryItemProps) {
               category={subcategory}
               currentSlug={currentSlug}
               level={level + 1}
+              onItemClick={onItemClick}
             />
           ))}
         </div>
@@ -82,13 +86,14 @@ function CategoryItem({ category, currentSlug, level = 0 }: CategoryItemProps) {
   );
 }
 
-export default function CategorySidebar({ categories, currentSlug }: CategorySidebarProps) {
+export default function CategorySidebar({ categories, currentSlug, onItemClick }: CategorySidebarProps) {
   return (
     <div className="w-64 bg-white border-r border-gray-200 h-screen overflow-y-auto sticky top-0">
       <div className="p-4">
         <div className="mb-6">
           <Link 
             href="/" 
+            onClick={onItemClick}
             className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors"
           >
             Documentation
@@ -96,7 +101,7 @@ export default function CategorySidebar({ categories, currentSlug }: CategorySid
         </div>
 
         <nav className="space-y-2">
-          <CategoryItem category={categories} currentSlug={currentSlug} />
+          <CategoryItem category={categories} currentSlug={currentSlug} onItemClick={onItemClick} />
         </nav>
       </div>
     </div>
