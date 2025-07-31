@@ -52,7 +52,7 @@ async function processMarkdownFile(
       const content = Buffer.from(fileContent.content, "base64").toString("utf-8");
       const { data: frontmatter, content: markdown } = matter(content);
 
-      const processedContent = await remark().use(html).process(markdown);
+      const processedContent = await remark().use(html, { sanitize: false }).process(markdown);
 
       const slug = file.name.replace(".md", "");
       const category = categoryPath.split("/").pop() || "uncategorized";
@@ -176,7 +176,7 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
       const content = Buffer.from(fileContent.content, "base64").toString("utf-8");
       const { data: frontmatter, content: markdown } = matter(content);
 
-      const processedContent = await remark().use(html).process(markdown);
+      const processedContent = await remark().use(html, { sanitize: false }).process(markdown);
 
       const category = categoryPath.split("/").pop() || "uncategorized";
 
