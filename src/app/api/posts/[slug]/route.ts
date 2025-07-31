@@ -4,6 +4,8 @@ import { remark } from "remark";
 import html from "remark-html";
 import { BlogPost } from "@/types/blog";
 
+export const revalidate = 7200; // 2小时重新验证
+
 interface GitHubContentItem {
   type: "file" | "dir";
   name: string;

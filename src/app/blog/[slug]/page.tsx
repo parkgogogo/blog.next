@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import BlogPostLayout from "@/components/BlogPostLayout";
-import { getPost, getCategories } from "@/lib/posts";
+
+export const revalidate = 7200; // 2小时重新验证
 
 export default async function BlogPostPage({
   params,
@@ -11,10 +12,21 @@ export default async function BlogPostPage({
   const { slug: rawSlug } = await params;
   const slug = decodeURIComponent(rawSlug);
 
-  const post = await getPost(slug);
-  const categories = await getCategories();
+  // 使用 fetch 调用 API，利用 Next.js 缓存
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const [postResponse, categoriesResponse] = await Promise.all([
+    fetch(`${baseUrl}/api/posts/${slug}`, {
+      next: { revalidate: 7200 }, // 2小时缓存
+    }),
+    fetch(`${baseUrl}/api/posts`, {
+      next: { revalidate: 1800 }, // 30分钟缓存
+    }),
+  ]);
 
-  if (!post) {
+  const post = await postResponse.json();
+  const categories = await categoriesResponse.json();
+
+  if (post.error || !post) {
     notFound();
   }
 

@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { Category, BlogPostMeta } from '@/types/blog';
-import { getCategories } from '@/lib/posts';
+
+export const revalidate = 1800; // 30分钟重新验证
+export const dynamic = 'force-dynamic'; // 强制动态渲染，避免构建时获取数据
 
 function CategorySection({ category }: { category: Category }) {
   const getAllPosts = (cat: Category): BlogPostMeta[] => {
@@ -92,7 +94,12 @@ function CategorySection({ category }: { category: Category }) {
 }
 
 export default async function BlogPage() {
-  const categories = await getCategories();
+  // 使用 fetch 调用 API，利用 Next.js 缓存
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const response = await fetch(`${baseUrl}/api/posts`, {
+    next: { revalidate: 1800 }, // 30分钟缓存
+  });
+  const categories = await response.json();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -114,7 +121,7 @@ export default async function BlogPage() {
         )}
         
         {/* Subcategories */}
-        {categories.subcategories && categories.subcategories.map((category) => (
+        {categories.subcategories && categories.subcategories.map((category: Category) => (
           <CategorySection key={category.path} category={category} />
         ))}
       </div>
