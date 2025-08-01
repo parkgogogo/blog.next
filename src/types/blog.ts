@@ -7,6 +7,7 @@ export interface BlogPost {
   tags?: string[];
   category: string;
   categoryPath: string;
+  readingTime?: number;
 }
 
 export interface BlogPostMeta {
@@ -17,6 +18,7 @@ export interface BlogPostMeta {
   tags?: string[];
   category: string;
   categoryPath: string;
+  readingTime?: number;
 }
 
 export interface Category {

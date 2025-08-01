@@ -1,8 +1,9 @@
-import { Octokit } from '@octokit/rest';
-import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
-import { BlogPost, Category } from '@/types/blog';
+import { Octokit } from "@octokit/rest";
+import matter from "gray-matter";
+import { remark } from "remark";
+import html from "remark-html";
+import { BlogPost, Category } from "@/types/blog";
+import { cache } from "react";
 
 interface GitHubContentItem {
   type: "file" | "dir" | "submodule" | "symlink";
@@ -18,7 +19,22 @@ const GITHUB_OWNER = process.env.GITHUB_OWNER || "your-username";
 const GITHUB_REPO = process.env.GITHUB_REPO || "your-blog-repo";
 const POSTS_PATH = process.env.POSTS_PATH || "posts";
 
-async function getDirectoryContents(path: string): Promise<GitHubContentItem[]> {
+/**
+ * 计算阅读时间
+ * @param content
+ * @returns
+ */
+function calculateReadingTime(content: string): number {
+  const wordsPerMinute = 200; // 假设每分钟阅读200个字
+  const text = content.replace(/<[^>]*>/g, ""); // 移除HTML标签
+  const wordCount = text.length; // 中文字符数
+  const readingTime = Math.ceil(wordCount / wordsPerMinute);
+  return readingTime || 1; // 最少1分钟
+}
+
+async function getDirectoryContents(
+  path: string,
+): Promise<GitHubContentItem[]> {
   try {
     const { data: contents } = await octokit.rest.repos.getContent({
       owner: GITHUB_OWNER,
@@ -39,7 +55,7 @@ async function getDirectoryContents(path: string): Promise<GitHubContentItem[]> 
 
 async function processMarkdownFile(
   file: GitHubContentItem,
-  categoryPath: string
+  categoryPath: string,
 ): Promise<BlogPost | null> {
   try {
     const { data: fileContent } = await octokit.rest.repos.getContent({
@@ -49,10 +65,14 @@ async function processMarkdownFile(
     });
 
     if ("content" in fileContent) {
-      const content = Buffer.from(fileContent.content, "base64").toString("utf-8");
+      const content = Buffer.from(fileContent.content, "base64").toString(
+        "utf-8",
+      );
       const { data: frontmatter, content: markdown } = matter(content);
 
-      const processedContent = await remark().use(html, { sanitize: false }).process(markdown);
+      const processedContent = await remark()
+        .use(html, { sanitize: false })
+        .process(markdown);
 
       const slug = file.name.replace(".md", "");
       const category = categoryPath.split("/").pop() || "uncategorized";
@@ -64,6 +84,7 @@ async function processMarkdownFile(
         content: processedContent.toString(),
         excerpt: frontmatter.excerpt || markdown.slice(0, 200) + "...",
         tags: frontmatter.tags || [],
+        readingTime: calculateReadingTime(processedContent.toString()),
         category,
         categoryPath,
       };
@@ -101,13 +122,14 @@ async function processCategory(categoryPath: string): Promise<Category> {
           tags: post.tags,
           category: post.category,
           categoryPath: post.categoryPath,
+          readingTime: post.readingTime,
         });
       }
     }
   }
 
   category.posts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 
   return category;
@@ -115,7 +137,7 @@ async function processCategory(categoryPath: string): Promise<Category> {
 
 async function findMarkdownFile(
   slug: string,
-  basePath: string = POSTS_PATH
+  basePath: string = POSTS_PATH,
 ): Promise<{ file: GitHubContentItem; categoryPath: string } | null> {
   try {
     const { data: contents } = await octokit.rest.repos.getContent({
@@ -152,9 +174,9 @@ async function findMarkdownFile(
   }
 }
 
-export async function getCategories(): Promise<Category> {
-  return processCategory(POSTS_PATH);
-}
+export const getCategories = async () => {
+  return await processCategory(POSTS_PATH);
+};
 
 export async function getPost(slug: string): Promise<BlogPost | null> {
   try {
@@ -173,10 +195,14 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
     });
 
     if ("content" in fileContent) {
-      const content = Buffer.from(fileContent.content, "base64").toString("utf-8");
+      const content = Buffer.from(fileContent.content, "base64").toString(
+        "utf-8",
+      );
       const { data: frontmatter, content: markdown } = matter(content);
 
-      const processedContent = await remark().use(html, { sanitize: false }).process(markdown);
+      const processedContent = await remark()
+        .use(html, { sanitize: false })
+        .process(markdown);
 
       const category = categoryPath.split("/").pop() || "uncategorized";
 
