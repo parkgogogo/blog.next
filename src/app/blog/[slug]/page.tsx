@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import BlogPostLayout from "@/components/BlogPostLayout";
-import { getCategoriesCache, getPostCache } from "@/lib/cache";
-
-export const revalidate = 7200; // 2小时重新验证
+import { getCategories, getPost } from "@/lib/posts";
 
 export default async function BlogPostPage({
   params,
@@ -14,8 +12,8 @@ export default async function BlogPostPage({
   const slug = decodeURIComponent(rawSlug);
 
   const [post, categories] = await Promise.all([
-    (async () => await getPostCache(slug))(),
-    getCategoriesCache(),
+    (async () => await getPost(slug))(),
+    getCategories(),
   ]);
 
   if (!post) {
