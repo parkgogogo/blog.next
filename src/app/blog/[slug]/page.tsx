@@ -1,7 +1,11 @@
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import BlogPostLayout from "@/components/BlogPostLayout";
-import { getCategories, getPost } from "@/lib/posts";
+import { getAllSlugs, getCategories, getPost } from "@/lib/posts";
+
+export async function generateStaticParams() {
+  return await getAllSlugs();
+}
 
 export default async function BlogPostPage({
   params,

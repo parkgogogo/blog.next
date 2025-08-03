@@ -3,7 +3,6 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 import { BlogPost, Category } from "@/types/blog";
-import { cache } from "react";
 
 interface GitHubContentItem {
   type: "file" | "dir" | "submodule" | "symlink";
@@ -173,6 +172,25 @@ async function findMarkdownFile(
     return null;
   }
 }
+
+export const getAllSlugs = async (): Promise<string[]> => {
+  const category = await processCategory(POSTS_PATH);
+  const slugs: string[] = [];
+
+  function extractSlugsFromCategory(cat: Category) {
+    for (const post of cat.posts) {
+      slugs.push(post.slug);
+    }
+    if (cat.subcategories) {
+      for (const subcategory of cat.subcategories) {
+        extractSlugsFromCategory(subcategory);
+      }
+    }
+  }
+
+  extractSlugsFromCategory(category);
+  return slugs;
+};
 
 export const getCategories = async () => {
   return await processCategory(POSTS_PATH);
