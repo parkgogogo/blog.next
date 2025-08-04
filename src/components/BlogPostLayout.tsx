@@ -23,51 +23,27 @@ export default function BlogPostLayout({
   const [isTocOpen, setIsTocOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Mobile Header */}
-      <div className="md:hidden bg-background p-4 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-gray-900">Documentation</h1>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setIsTocOpen(!isTocOpen)}
-            className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-            title="Table of Contents"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 10h16M4 14h16M4 18h16"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-            title="Menu"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 fixed right-4 top-1"
+        title="Menu"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
 
       <div className="flex">
         {/* Mobile Sidebar Overlay */}
@@ -100,6 +76,7 @@ export default function BlogPostLayout({
           </div>
         )}
 
+        {/* Desktop Left Sidebar */}
         {/* Desktop Left Sidebar */}
         <div className="hidden md:block w-64 flex-shrink-0">
           <CategorySidebarServer

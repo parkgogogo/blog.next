@@ -21,16 +21,17 @@ function CategorySection({ category }: { category: Category }) {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-12">
       {allPosts.map((post) => (
         <article key={post.slug} className="group">
           <Link href={`/blog/${post.slug}`}>
-            <div className="flex flex-col sm:flex-row sm:items-center">
-              <h3 className="text-lg font-normal text-gray-700 group-hover:text-gray-600 transition-colors mb-2 sm:mb-0 sm:mr-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-700 group-hover:text-gray-600 transition-colors mb-2 sm:mb-0 sm:mr-4">
                 {post.title}
               </h3>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <time>{format(new Date(post.date), "MMM d, yyyy")}</time>
+              <p className="line-clamp-2 text-gray-600 mt-2">{post.excerpt}</p>
+              <div className="flex items-center gap-2 text-sm text-gray-500 mt-4">
+                <time>{format(new Date(post.date), "d MMM, yyyy")}</time>
                 {post.readingTime !== undefined && post.readingTime > 0 && (
                   <>
                     <span>·</span>
@@ -51,16 +52,16 @@ export default async function BlogPage() {
   const categories = await getCategories();
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-20">
+    <div className="max-w-4xl mx-auto px-6 pb-20">
       {/* Header */}
       <header className="mb-16">
-        <h1 className="text-3xl md:text-4xl font-normal text-gray-900 mb-3">
-          My Blog
+        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-3">
+          Blogs
         </h1>
       </header>
 
       {/* Content */}
-      <div className="space-y-6">
+      <div className="space-y-12">
         {/* Root category posts */}
         {categories.posts.length > 0 && (
           <CategorySection category={categories} />

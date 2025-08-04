@@ -4,7 +4,8 @@ import BlogPostLayout from "@/components/BlogPostLayout";
 import { getAllSlugs, getCategories, getPost } from "@/lib/posts";
 
 export async function generateStaticParams() {
-  return await getAllSlugs();
+  const slugs = await getAllSlugs();
+  return slugs.map((slug) => ({ slug: slug }));
 }
 
 export default async function BlogPostPage({
@@ -24,25 +25,29 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  const formattedDate = format(new Date(post.date), "MMMM d, yyyy");
-
   return (
     <BlogPostLayout
       categories={categories}
       currentSlug={slug}
       content={post.content}
     >
-      <div className="max-w-4xl mx-auto px-4 md:px-8 py-6 md:py-12">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 py-6">
         <article className="bg-transparent">
           <div className="px-0 py-0">
             {/* Post Header */}
             <header className="mb-8 md:mb-12">
-              <h1 className="text-3xl md:text-5xl font-display font-light text-foreground mb-4 md:mb-6 leading-tight tracking-tight">
+              <h1 className="text-3xl font-medium font-display text-foreground mb-4 leading-tight tracking-tight">
                 {post.title}
               </h1>
 
-              <div className="flex flex-row items-center gap-4">
-                <time className="text-sm text-muted">{formattedDate}</time>
+              <div className="flex flex-row items-center gap-2 text-gray-500">
+                <time>{format(new Date(post.date), "d MMM, yyyy")}</time>
+                {post.readingTime !== undefined && post.readingTime > 0 && (
+                  <>
+                    <span>·</span>
+                    <span>{post.readingTime} min read</span>
+                  </>
+                )}
               </div>
 
               {post.tags && post.tags.length > 0 && (

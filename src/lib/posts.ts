@@ -231,6 +231,7 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
         content: processedContent.toString(),
         excerpt: frontmatter.excerpt || markdown.slice(0, 200) + "...",
         tags: frontmatter.tags || [],
+        readingTime: calculateReadingTime(processedContent.toString()),
         category,
         categoryPath,
       };
