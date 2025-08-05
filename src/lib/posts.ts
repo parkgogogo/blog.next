@@ -1,7 +1,5 @@
 import { Octokit } from "@octokit/rest";
 import matter from "gray-matter";
-import { remark } from "remark";
-import html from "remark-html";
 import { BlogPost, Category } from "@/types/blog";
 
 interface GitHubContentItem {
@@ -25,7 +23,7 @@ const POSTS_PATH = process.env.POSTS_PATH || "posts";
  */
 function calculateReadingTime(content: string): number {
   const wordsPerMinute = 200; // 假设每分钟阅读200个字
-  const text = content.replace(/<[^>]*>/g, ""); // 移除HTML标签
+  const text = content.replace(/[#*`~\[\]()]/g, ""); // 移除markdown标记
   const wordCount = text.length; // 中文字符数
   const readingTime = Math.ceil(wordCount / wordsPerMinute);
   return readingTime || 1; // 最少1分钟
@@ -69,10 +67,6 @@ async function processMarkdownFile(
       );
       const { data: frontmatter, content: markdown } = matter(content);
 
-      const processedContent = await remark()
-        .use(html, { sanitize: false })
-        .process(markdown);
-
       const slug = file.name.replace(".md", "");
       const category = categoryPath.split("/").pop() || "uncategorized";
 
@@ -80,10 +74,10 @@ async function processMarkdownFile(
         slug,
         title: frontmatter.title || slug,
         date: frontmatter.date || new Date().toISOString(),
-        content: processedContent.toString(),
+        content: markdown,
         excerpt: frontmatter.excerpt || markdown.slice(0, 200) + "...",
         tags: frontmatter.tags || [],
-        readingTime: calculateReadingTime(processedContent.toString()),
+        readingTime: calculateReadingTime(markdown),
         category,
         categoryPath,
       };
@@ -218,20 +212,16 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
       );
       const { data: frontmatter, content: markdown } = matter(content);
 
-      const processedContent = await remark()
-        .use(html, { sanitize: false })
-        .process(markdown);
-
       const category = categoryPath.split("/").pop() || "uncategorized";
 
       return {
         slug,
         title: frontmatter.title || slug,
         date: frontmatter.date || new Date().toISOString(),
-        content: processedContent.toString(),
+        content: markdown,
         excerpt: frontmatter.excerpt || markdown.slice(0, 200) + "...",
         tags: frontmatter.tags || [],
-        readingTime: calculateReadingTime(processedContent.toString()),
+        readingTime: calculateReadingTime(markdown),
         category,
         categoryPath,
       };

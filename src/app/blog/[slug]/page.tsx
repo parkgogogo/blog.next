@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import BlogPostLayout from "@/components/BlogPostLayout";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { getAllSlugs, getCategories, getPost } from "@/lib/posts";
 
 export async function generateStaticParams() {
@@ -25,6 +26,8 @@ export default async function BlogPostPage({
     notFound();
   }
 
+  console.log(post.content);
+
   return (
     <BlogPostLayout
       categories={categories}
@@ -36,7 +39,7 @@ export default async function BlogPostPage({
           <div className="px-0 py-0">
             {/* Post Header */}
             <header className="mb-8 md:mb-12">
-              <h1 className="text-3xl font-medium font-display text-foreground mb-4 leading-tight tracking-tight">
+              <h1 className="text-3xl font-medium font-display text-foreground mb-4 leading-tight tracking-tight mt-0">
                 {post.title}
               </h1>
 
@@ -65,10 +68,9 @@ export default async function BlogPostPage({
             </header>
 
             {/* Post Content */}
-            <div
-              className="prose prose-lg max-w-none mt-6 md:mt-8"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+            <div className="mt-6 md:mt-8">
+              <MarkdownRenderer content={post.content} />
+            </div>
           </div>
         </article>
       </div>

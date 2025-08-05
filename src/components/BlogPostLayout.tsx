@@ -25,9 +25,9 @@ export default function BlogPostLayout({
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile Header */}
-      <button
+      <div
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 fixed right-4 top-1"
+        className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 fixed right-4 top-4 flex md:hidden"
         title="Menu"
       >
         <svg
@@ -43,7 +43,7 @@ export default function BlogPostLayout({
             d="M4 6h16M4 12h16M4 18h16"
           />
         </svg>
-      </button>
+      </div>
 
       <div className="flex">
         {/* Mobile Sidebar Overlay */}

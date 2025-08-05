@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { BlogPost } from '@/types/blog';
+import MarkdownRenderer from './MarkdownRenderer';
 
 interface BlogPostComponentProps {
   post: BlogPost;
@@ -36,10 +37,7 @@ export default function BlogPostComponent({
         </h2>
         
         {showFullContent ? (
-          <div 
-            className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <MarkdownRenderer content={post.content} />
         ) : (
           <div className="mb-4">
             <p className="text-gray-700 text-base leading-relaxed">
