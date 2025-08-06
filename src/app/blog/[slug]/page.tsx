@@ -26,8 +26,6 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  console.log(post.content);
-
   return (
     <BlogPostLayout
       categories={categories}
