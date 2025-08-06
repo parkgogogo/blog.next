@@ -1,7 +1,7 @@
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import "tailwindcss";
 @import "tailwind-scrollbar-hide/v4";
+@import "github-markdown-css/github-markdown.css";
+@import "./code.css";
 
 :root {
     --background: #fdfdf7;
@@ -39,12 +39,4 @@ body {
     font-family: Inter, system-ui, sans-serif;
     line-height: 1.6;
     font-weight: 400;
-}
-
-.prose ul {
-    padding-left: 16px;
-}
-
-.prose li {
-    margin-bottom: 6px;
 }
