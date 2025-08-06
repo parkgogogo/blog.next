@@ -27,7 +27,7 @@ export default function CategoryItemClient({
       {/* Category Header */}
       {category.name !== "docs" && (
         <div className={`py-2 ${indentClass}`}>
-          <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-300 uppercase tracking-wide">
             {category.name}
           </h3>
         </div>
@@ -44,7 +44,7 @@ export default function CategoryItemClient({
               className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                 currentSlug === post.slug
                   ? "bg-gray-100 font-semibold"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  : "text-gray-600 dark:text-gray-200 hover:bg-gray-100 hover:text-gray-900"
               }`}
             >
               {post.title}

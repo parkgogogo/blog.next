@@ -26,11 +26,13 @@ function CategorySection({ category }: { category: Category }) {
         <article key={post.slug} className="group">
           <Link href={`/blog/${post.slug}`}>
             <div>
-              <h3 className="text-lg font-semibold text-gray-700 group-hover:text-gray-600 transition-colors mb-2 sm:mb-0 sm:mr-4">
+              <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 dark:group-hover:text-gray-300 group-hover:text-gray-600 transition-colors mb-2 sm:mb-0 sm:mr-4">
                 {post.title}
               </h3>
-              <p className="line-clamp-2 text-gray-600 mt-2">{post.excerpt}</p>
-              <div className="flex items-center gap-2 text-sm text-gray-500 mt-4">
+              <p className="line-clamp-2 text-gray-600 dark:text-gray-300 mt-2">
+                {post.excerpt}
+              </p>
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-4">
                 <time>{format(new Date(post.date), "d MMM, yyyy")}</time>
                 {post.readingTime !== undefined && post.readingTime > 0 && (
                   <>
@@ -55,7 +57,7 @@ export default async function BlogPage() {
     <div className="max-w-4xl mx-auto px-6 pb-20">
       {/* Header */}
       <header className="mb-16">
-        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-3">
+        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-gray-200 mb-3">
           Blogs
         </h1>
       </header>

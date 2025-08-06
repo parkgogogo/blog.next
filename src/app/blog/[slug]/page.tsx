@@ -43,7 +43,7 @@ export default async function BlogPostPage({
                 {post.title}
               </h1>
 
-              <div className="flex flex-row items-center gap-2 text-gray-500">
+              <div className="flex flex-row items-center gap-2 text-gray-500 dark:text-gray-400">
                 <time>{format(new Date(post.date), "d MMM, yyyy")}</time>
                 {post.readingTime !== undefined && post.readingTime > 0 && (
                   <>

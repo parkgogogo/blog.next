@@ -25,7 +25,7 @@ a {
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background: #09090b;
+        --background: oklch(13% 0.028 261.692);
         --foreground: #ededed;
         --text-muted: #9ca3af;
         --border-subtle: #374151;

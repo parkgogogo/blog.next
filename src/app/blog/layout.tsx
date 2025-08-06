@@ -8,7 +8,7 @@ export default async function BlogLayout({
 }) {
   return (
     <div className="min-h-screen bg-background">
-      <div className="pt-3 pb-4 px-6">
+      <div className="pt-3 pb-4 px-6 flex items-center gap-4">
         <Image src="/park.svg" width={68} height={32} alt="logo" />
       </div>
       {children}
