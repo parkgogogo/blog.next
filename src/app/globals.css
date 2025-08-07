@@ -1,7 +1,23 @@
-@import "tailwindcss";
-@import "tailwind-scrollbar-hide/v4";
-@import "github-markdown-css/github-markdown.css";
-@import "./code.css";
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "github-markdown-css/github-markdown.css" layer(components);
+@import "./code.css" layer(components);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/*@import "tailwind-scrollbar-hide/v4";
+@import "github-markdown-css/github-markdown.css";*/
+@import "./code.css" layer(utilities);
+
+/* 覆盖 prefight */
+@layer components {
+    .markdown-body li {
+        list-style-type: disc;
+    }
+    .markdown-body {
+        background-color: unset;
+    }
+}
 
 :root {
     --background: #fdfdf7;
