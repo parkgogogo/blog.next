@@ -3,6 +3,7 @@ import MarkdownRenderer from "@/components/MarkdownRenderer";
 export default function HashtagTestPage() {
   const testContent = `
 # Hashtag Test Page
+#test
 
 This is a test page to demonstrate hashtag rendering.
 

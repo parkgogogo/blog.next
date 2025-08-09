@@ -43,7 +43,7 @@ function processHashtagsInText(child: ReactNode): ReactNode {
       parts.push(child.slice(lastIndex));
     }
 
-    return parts.length > 1 ? parts : child;
+    return parts.length > 0 ? parts : child;
   }
   return child;
 }
