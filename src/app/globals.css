@@ -26,6 +26,38 @@
       box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     }
   }
+
+  /* Hashtag styles */
+  .hashtag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-radius: 9999px;
+    border: 1px solid #bfdbfe;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 0 0.125rem;
+  }
+
+  .hashtag:hover {
+    background-color: #bfdbfe;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .hashtag {
+      background-color: #1e3a8a;
+      color: #bfdbfe;
+      border-color: #3730a3;
+    }
+
+    .hashtag:hover {
+      background-color: #1e40af;
+    }
+  }
 }
 
 :root {
