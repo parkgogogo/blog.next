@@ -71,10 +71,12 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           li: ({ children }) => <li>{processChildren(children)}</li>,
           img: ({ src, alt }) => (
             <Image
+              loading="lazy"
               src={src as string}
-              alt={alt || "image"}
+              alt={alt || "blog's image"}
               width={650}
               height={350}
+              quality={80}
             />
           ),
         }}
