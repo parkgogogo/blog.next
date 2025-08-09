@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const { path } = params;
+    const { path } = await params;
 
     // Get environment variables
     const githubToken = process.env.GITHUB_TOKEN;
