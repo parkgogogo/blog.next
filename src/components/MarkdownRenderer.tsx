@@ -4,6 +4,7 @@ import rehypeStarryNight from "rehype-starry-night";
 import { all } from "@wooorm/starry-night";
 import { convertAttachmentUrls } from "@/lib/attachment";
 import type { ReactNode } from "react";
+import Image from "next/image";
 
 interface MarkdownRendererProps {
   content: string;
@@ -68,6 +69,14 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         components={{
           p: ({ children }) => <p>{processChildren(children)}</p>,
           li: ({ children }) => <li>{processChildren(children)}</li>,
+          img: ({ src, alt }) => (
+            <Image
+              src={src as string}
+              alt={alt || "image"}
+              width={650}
+              height={350}
+            />
+          ),
         }}
       >
         {processedContent}
