@@ -1,7 +1,7 @@
-export const Logo: React.FC = () => {
+export const Logo: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
-      className="text-gray-800 dark:text-white"
+      className={className || "text-gray-800 dark:text-white"}
       width="74px"
       height="32px"
       viewBox="0 0 74 32"

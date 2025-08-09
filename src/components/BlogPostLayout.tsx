@@ -27,7 +27,7 @@ export default function BlogPostLayout({
       {/* Mobile Header */}
       <div
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 fixed right-4 top-4 flex md:hidden"
+        className="p-2 rounded-md text-muted hover:text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 fixed right-4 top-4 flex md:hidden"
         title="Menu"
       >
         <svg
@@ -50,10 +50,10 @@ export default function BlogPostLayout({
         {isSidebarOpen && (
           <div className="fixed inset-0 z-50 md:hidden">
             <div
-              className="absolute inset-0 bg-gray-600 opacity-50"
+              className="absolute inset-0 bg-black opacity-50"
               onClick={() => setIsSidebarOpen(false)}
             ></div>
-            <div className="relative w-64 h-full bg-white">
+            <div className="relative w-64 h-full bg-background">
               <MobileCategorySidebar
                 categories={categories}
                 currentSlug={currentSlug}
@@ -67,10 +67,10 @@ export default function BlogPostLayout({
         {isTocOpen && (
           <div className="fixed inset-0 z-50 md:hidden">
             <div
-              className="absolute inset-0 bg-gray-600 opacity-50"
+              className="absolute inset-0 bg-black opacity-50"
               onClick={() => setIsTocOpen(false)}
             ></div>
-            <div className="relative w-64 h-full bg-white ml-auto">
+            <div className="relative w-64 h-full bg-background ml-auto">
               <TableOfContentsWrapper content={content} />
             </div>
           </div>

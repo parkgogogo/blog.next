@@ -43,8 +43,8 @@ export default function CategoryItemClient({
               onClick={onItemClick}
               className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                 currentSlug === post.slug
-                  ? "bg-gray-100 font-semibold"
-                  : "text-gray-600 dark:text-gray-200 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-gray-100 dark:bg-gray-900 font-semibold"
+                  : "text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
               }`}
             >
               {post.title}
