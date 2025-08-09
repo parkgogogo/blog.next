@@ -1,67 +1,130 @@
+import { Logo } from "@/components/Logo";
+import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 import Link from "next/link";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold text-gray-900 sm:text-6xl mb-6">
-            Welcome to My Blog
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            A personal blog powered by GitHub. All content is sourced directly from markdown files in my repository.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/blog"
-              className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <header className="flex justify-between items-center px-8 py-4">
+        <Logo />
+        {/* <div className="text-2xl font-bold font-display tracking-wider">
+        </div> */}
+        <nav className="flex items-center space-x-6">
+          <Link href="/blog">
+            <div className="text-muted-foreground hover:text-foreground">
+              Blog
+            </div>
+          </Link>
+          {/* <a href="#" className="text-muted-foreground hover:text-foreground">
+            Contact
+          </a> */}
+          <div className="flex items-center space-x-4">
+            {/* <a
+              href="https://x.com/parkgogogo"
+              className="text-muted-foreground hover:text-foreground"
             >
-              Read Blog Posts
-            </Link>
+              <Twitter size={20} />
+            </a> */}
             <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              href="https://github.com/parkgogogo"
+              className="text-muted-foreground hover:text-foreground"
             >
-              View on GitHub
+              <Github size={20} />
             </a>
           </div>
+        </nav>
+      </header>
+      <main className="flex-grow flex items-center justify-center">
+        <div className="max-w-2xl w-full px-8 space-y-12 -translate-y-1/4">
+          <section className="animate-fade-in-up">
+            <h1 className="text-5xl font-bold font-display">
+              Hey, I&apos;m <span className="text-accent-warm">Park</span>!
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+              A self-proclaimed script kiddie who fell in love with the art of
+              coding! When I&apos;m not busy turning coffee into code,
+              you&apos;ll find me crafting delightful frontend experiences and
+              occasionally breaking things in the most creative ways possible.
+              🚀
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full border border-blue-200 dark:border-blue-800">
+                React
+              </span>
+              <span className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full border border-blue-200 dark:border-blue-800">
+                TypeScript
+              </span>
+              <span className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-800">
+                Next.js
+              </span>
+              <span className="px-3 py-1 text-sm bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-full border border-green-200 dark:border-green-800">
+                Frontend Magic
+              </span>
+            </div>
+            <div className="mt-6">
+              <svg
+                width="80"
+                height="10"
+                viewBox="0 0 80 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 5C10.1667 9.16667 19.8 0.5 27 5C34.2 9.5 42.1667 1.83333 50.5 5C58.8333 8.16667 67.8 1.5 78 5"
+                  stroke="var(--accent-warm)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </section>
+          {/* <section
+            className="animate-fade-in-up"
+            style={{ animationDelay: "0.2s" }}
+          >
+            <h2 className="text-lg font-semibold">Find me on</h2>
+            <div className="mt-4 flex items-center space-x-6">
+              <a
+                href="https://x.com/parkgogogo"
+                className="flex items-center space-x-2 text-muted-foreground hover:text-foreground"
+              >
+                <Twitter size={20} />
+                <span>Twitter</span>
+              </a>
+              <a
+                href="https://github.com/parkgogogo"
+                className="flex items-center space-x-2 text-muted-foreground hover:text-foreground"
+              >
+                <Github size={20} />
+                <span>GitHub</span>
+              </a>
+              <a
+                href="#"
+                className="flex items-center space-x-2 text-muted-foreground hover:text-foreground"
+              >
+                <Linkedin size={20} />
+                <span>LinkedIn</span>
+              </a>
+            </div>
+          </section> */}
+          <section
+            className="animate-fade-in-up"
+            style={{ animationDelay: "0.4s" }}
+          >
+            <h2 className="text-lg font-semibold">Contact</h2>
+            <p className="mt-2 text-muted-foreground">
+              You can reach me out anytime at{" "}
+              <a
+                href="mailto:g.park@family.park"
+                className="text-accent-warm underline"
+              >
+                gyuannn1100@gmail.com
+              </a>
+            </p>
+          </section>
         </div>
-        
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Markdown Powered</h3>
-            <p className="text-gray-600">Write posts in markdown format and they&apos;ll be automatically rendered.</p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">GitHub Integration</h3>
-            <p className="text-gray-600">Content is fetched directly from your GitHub repository.</p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Fast & Modern</h3>
-            <p className="text-gray-600">Built with Next.js and TypeScript for optimal performance.</p>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   );
 }

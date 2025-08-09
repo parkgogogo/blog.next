@@ -21,7 +21,7 @@ function CategorySection({ category }: { category: Category }) {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 animate-fade-in-up">
       {allPosts.map((post) => (
         <article key={post.slug} className="group">
           <Link href={`/blog/${post.slug}`}>
