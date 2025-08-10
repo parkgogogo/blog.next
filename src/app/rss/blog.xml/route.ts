@@ -12,10 +12,11 @@ export async function GET() {
     "http://localhost:3000";
 
   const feed = new RSS({
-    title: "Blog",
+    title: "Park's Blog",
     description: "Latest posts",
     feed_url: `${siteUrl}/rss/blog`,
     site_url: siteUrl,
+    image_url: `${siteUrl}/park_logo.svg`,
   });
 
   try {
