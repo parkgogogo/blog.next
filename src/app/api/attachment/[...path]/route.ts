@@ -94,7 +94,7 @@ export async function GET(
         status: 200,
         headers: {
           "Content-Type": contentType,
-          "Cache-Control": "public, max-age=3600, s-maxage=3600",
+          "Cache-Control": "public, max-age=3600, s-maxage=31536000",
           "Content-Disposition": `inline; filename="${data.name}"`,
           "Content-Length": fileContent.length.toString(),
         },
