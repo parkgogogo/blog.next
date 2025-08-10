@@ -69,16 +69,22 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         components={{
           p: ({ children }) => <p>{processChildren(children)}</p>,
           li: ({ children }) => <li>{processChildren(children)}</li>,
-          img: ({ src, alt }) => (
-            <Image
-              loading="lazy"
-              src={src as string}
-              alt={alt || "blog's image"}
-              width={650}
-              height={350}
-              quality={80}
-            />
-          ),
+          img: ({ src, alt, ...rest }) => {
+            return (
+              <div className="flex flex-col items-center my-4">
+                <Image
+                  className="rounded-xl"
+                  loading="lazy"
+                  src={src as string}
+                  alt={alt || "blog's image"}
+                  width={650}
+                  height={350}
+                  quality={80}
+                />
+                <div className="italic text-sm mt-2 font-serif">{alt}</div>
+              </div>
+            );
+          },
         }}
       >
         {processedContent}

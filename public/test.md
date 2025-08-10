@@ -33,7 +33,7 @@ This is a test document for markdown rendering.
 
 [Echo Site](https://echo.example.com)
 
-![Test Image](https://example.com/image.jpg)
+![Test Image](/next.svg)
 
 ## Code Blocks
 
