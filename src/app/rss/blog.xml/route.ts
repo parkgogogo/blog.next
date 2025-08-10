@@ -1,6 +1,8 @@
 import RSS from "rss";
 import { getAllSlugs, getPost } from "@/lib/posts";
 
+export const dynamic = "force-static";
+
 /**
  * GET /rss/blog
  * Builds an RSS feed from markdown posts fetched via src/lib/posts.ts
