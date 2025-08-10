@@ -5,9 +5,11 @@ import { all } from "@wooorm/starry-night";
 import { convertAttachmentUrls } from "@/lib/attachment";
 import type { ReactNode } from "react";
 import Image from "next/image";
+import { format } from "date-fns";
 
 interface MarkdownRendererProps {
   content: string;
+  date?: string;
 }
 
 // Process text nodes to render hashtags as styled components
@@ -55,7 +57,10 @@ function processChildren(children: ReactNode): ReactNode {
     : processHashtagsInText(children);
 }
 
-export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
+export default function MarkdownRenderer({
+  content,
+  date,
+}: MarkdownRendererProps) {
   // Convert attachment URLs to API URLs
   const processedContent = convertAttachmentUrls(content);
 
@@ -67,9 +72,21 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           (options) => rehypeStarryNight({ ...options, grammars: all }),
         ]}
         components={{
+          header: ({ children }) => (
+            <div>
+              <h1 className="text-3xl font-medium font-display text-foreground mb-4 leading-tight tracking-tight mt-0">
+                {processChildren(children)}
+              </h1>
+              {date && (
+                <div className="flex flex-row items-center gap-2 text-gray-500 dark:text-gray-400">
+                  <time>{format(new Date(date), "d MMM, yyyy")}</time>
+                </div>
+              )}
+            </div>
+          ),
           p: ({ children }) => <p>{processChildren(children)}</p>,
           li: ({ children }) => <li>{processChildren(children)}</li>,
-          img: ({ src, alt, ...rest }) => {
+          img: ({ src, alt }) => {
             return (
               <div className="flex flex-col items-center my-4">
                 <Image

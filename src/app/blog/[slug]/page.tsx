@@ -67,7 +67,7 @@ export default async function BlogPostPage({
 
             {/* Post Content */}
             <div className="mt-6 md:mt-8">
-              <MarkdownRenderer content={post.content} />
+              <MarkdownRenderer content={post.content} date={post.date} />
             </div>
           </div>
         </article>

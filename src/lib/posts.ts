@@ -31,8 +31,38 @@ function calculateReadingTime(content: string): number {
   return readingTime || 1; // 最少1分钟
 }
 
+/**
+ * 获取文件在 GitHub 上最早的提交日期，作为文件创建时间的近似
+ * 如果获取失败或没有提交记录，返回当前时间的 ISO 字符串
+ */
+async function getFileCreationDate(filePath: string): Promise<string> {
+  try {
+    // 获取该文件的所有提交（按时间从新到旧）
+    const commits = await octokit.paginate(octokit.rest.repos.listCommits, {
+      owner: GITHUB_OWNER,
+      repo: GITHUB_REPO,
+      path: filePath,
+      per_page: 100,
+    });
+
+    if (!Array.isArray(commits) || commits.length === 0) {
+      return new Date().toISOString();
+    }
+
+    // 最旧的提交是数组最后一项
+    const oldest = commits[commits.length - 1];
+    const date =
+      oldest && (oldest.commit?.author?.date || oldest.commit?.committer?.date);
+
+    return date || new Date().toISOString();
+  } catch (error) {
+    console.error(`Error fetching commits for ${filePath}:`, error);
+    return new Date().toISOString();
+  }
+}
+
 async function getDirectoryContents(
-  path: string,
+  path: string
 ): Promise<GitHubContentItem[]> {
   try {
     const { data: contents } = await octokit.rest.repos.getContent({
@@ -54,7 +84,7 @@ async function getDirectoryContents(
 
 async function processMarkdownFile(
   file: GitHubContentItem,
-  categoryPath: string,
+  categoryPath: string
 ): Promise<BlogPost | null> {
   try {
     const { data: fileContent } = await octokit.rest.repos.getContent({
@@ -65,7 +95,7 @@ async function processMarkdownFile(
 
     if ("content" in fileContent) {
       const content = Buffer.from(fileContent.content, "base64").toString(
-        "utf-8",
+        "utf-8"
       );
       const { data: frontmatter, content: markdown } = matter(content);
 
@@ -75,7 +105,7 @@ async function processMarkdownFile(
       return {
         slug,
         title: frontmatter.title || slug,
-        date: frontmatter.date || new Date().toISOString(),
+        date: await getFileCreationDate(file.path),
         content: markdown,
         excerpt: frontmatter.excerpt || markdown.slice(0, 200) + "...",
         tags: frontmatter.tags || [],
@@ -124,7 +154,7 @@ async function processCategory(categoryPath: string): Promise<Category> {
   }
 
   category.posts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
   return category;
@@ -132,7 +162,7 @@ async function processCategory(categoryPath: string): Promise<Category> {
 
 async function findMarkdownFile(
   slug: string,
-  basePath: string = POSTS_PATH,
+  basePath: string = POSTS_PATH
 ): Promise<{ file: GitHubContentItem; categoryPath: string } | null> {
   try {
     const { data: contents } = await octokit.rest.repos.getContent({
@@ -229,7 +259,7 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
 
     if ("content" in fileContent) {
       const content = Buffer.from(fileContent.content, "base64").toString(
-        "utf-8",
+        "utf-8"
       );
       const { data: frontmatter, content: markdown } = matter(content);
 
@@ -238,7 +268,7 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
       return {
         slug,
         title: frontmatter.title || slug,
-        date: frontmatter.date || new Date().toISOString(),
+        date: frontmatter.date || (await getFileCreationDate(file.path)),
         content: markdown,
         excerpt: frontmatter.excerpt || markdown.slice(0, 200) + "...",
         tags: frontmatter.tags || [],

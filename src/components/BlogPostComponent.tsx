@@ -1,17 +1,17 @@
-import { format } from 'date-fns';
-import { BlogPost } from '@/types/blog';
-import MarkdownRenderer from './MarkdownRenderer';
+import { format } from "date-fns";
+import { BlogPost } from "@/types/blog";
+import MarkdownRenderer from "./MarkdownRenderer";
 
 interface BlogPostComponentProps {
   post: BlogPost;
   showFullContent?: boolean;
 }
 
-export default function BlogPostComponent({ 
-  post, 
-  showFullContent = false 
+export default function BlogPostComponent({
+  post,
+  showFullContent = false,
 }: BlogPostComponentProps) {
-  const formattedDate = format(new Date(post.date), 'MMMM d, yyyy');
+  const formattedDate = format(new Date(post.date), "MMMM d, yyyy");
 
   return (
     <article className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
@@ -31,13 +31,13 @@ export default function BlogPostComponent({
             </div>
           )}
         </div>
-        
+
         <h2 className="text-2xl font-bold text-gray-900 mb-4 hover:text-blue-600 transition-colors">
           {post.title}
         </h2>
-        
+
         {showFullContent ? (
-          <MarkdownRenderer content={post.content} />
+          <MarkdownRenderer content={post.content} date={post.date} />
         ) : (
           <div className="mb-4">
             <p className="text-gray-700 text-base leading-relaxed">
@@ -45,7 +45,7 @@ export default function BlogPostComponent({
             </p>
           </div>
         )}
-        
+
         {!showFullContent && (
           <div className="flex justify-between items-center mt-4">
             <a
@@ -53,8 +53,18 @@ export default function BlogPostComponent({
               className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors"
             >
               Read more
-              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="w-4 h-4 ml-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </a>
           </div>
