@@ -14,7 +14,12 @@ function CategorySection({ category }: { category: Category }) {
     return posts;
   };
 
-  const allPosts = getAllPosts(category);
+  const allPosts = getAllPosts(category).sort((a, b) => {
+    console.log(a, b);
+    const ta = new Date(a.date).getTime();
+    const tb = new Date(b.date).getTime();
+    return tb - ta;
+  });
 
   if (allPosts.length === 0) {
     return null;
@@ -29,10 +34,10 @@ function CategorySection({ category }: { category: Category }) {
               <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 dark:group-hover:text-gray-300 group-hover:text-gray-600 transition-colors mb-2 sm:mb-0 sm:mr-4">
                 {post.title}
               </h3>
-              <p className="line-clamp-2 text-gray-600 dark:text-gray-300 mt-2">
+              <p className="line-clamp-2 text-gray-600 dark:text-gray-300 mt-3">
                 {post.excerpt}
               </p>
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-4">
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
                 <time>{format(new Date(post.date), "d MMM, yyyy")}</time>
                 {post.readingTime !== undefined && post.readingTime > 0 && (
                   <>
@@ -64,16 +69,7 @@ export default async function BlogPage() {
 
       {/* Content */}
       <div className="space-y-12">
-        {/* Root category posts */}
-        {categories.posts.length > 0 && (
-          <CategorySection category={categories} />
-        )}
-
-        {/* Subcategories */}
-        {categories.subcategories &&
-          categories.subcategories.map((category: Category) => (
-            <CategorySection key={category.path} category={category} />
-          ))}
+        <CategorySection category={categories} />
       </div>
 
       {/* No content state */}
