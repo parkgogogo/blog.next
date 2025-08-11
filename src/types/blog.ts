@@ -10,21 +10,10 @@ export interface BlogPost {
   readingTime?: number;
 }
 
-export interface BlogPostMeta {
-  slug: string;
-  title: string;
-  date: string;
-  excerpt?: string;
-  tags?: string[];
-  category: string;
-  categoryPath: string;
-  readingTime?: number;
-}
-
 export interface Category {
   name: string;
   path: string;
-  posts: BlogPostMeta[];
+  posts: BlogPost[];
   subcategories?: Category[];
 }
 

@@ -2,10 +2,10 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import BlogPostLayout from "@/components/BlogPostLayout";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
-import { getAllSlugs, getCategories, getPost } from "@/lib/posts";
+import { PostService } from "@/lib/posts";
 
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs();
+  const slugs = await PostService.getSlugs();
   return slugs.map((slug) => ({ slug: slug }));
 }
 
@@ -18,8 +18,9 @@ export default async function BlogPostPage({
   const slug = decodeURIComponent(rawSlug);
 
   const [post, categories] = await Promise.all([
-    (async () => await getPost(slug))(),
-    getCategories(),
+    (async () =>
+      (await PostService.getAllPosts()).find((post) => post.slug === slug))(),
+    PostService.getCategory(),
   ]);
 
   if (!post) {

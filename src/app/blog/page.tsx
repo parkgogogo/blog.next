@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { format } from "date-fns";
-import { Category, BlogPostMeta } from "@/types/blog";
-import { getCategories } from "@/lib/posts";
+import { BlogPost, Category } from "@/types/blog";
+import { PostService } from "@/lib/posts";
 
 function CategorySection({ category }: { category: Category }) {
-  const getAllPosts = (cat: Category): BlogPostMeta[] => {
+  const getAllPosts = (cat: Category): BlogPost[] => {
     let posts = [...cat.posts];
     if (cat.subcategories) {
       cat.subcategories.forEach((subcat) => {
@@ -15,7 +15,6 @@ function CategorySection({ category }: { category: Category }) {
   };
 
   const allPosts = getAllPosts(category).sort((a, b) => {
-    console.log(a, b);
     const ta = new Date(a.date).getTime();
     const tb = new Date(b.date).getTime();
     return tb - ta;
@@ -56,7 +55,7 @@ function CategorySection({ category }: { category: Category }) {
 
 export default async function BlogPage() {
   // 使用 lib/posts 中的函数直接获取数据
-  const categories = await getCategories();
+  const categories = await PostService.getCategory();
 
   return (
     <div className="max-w-4xl mx-auto px-6 pb-20">

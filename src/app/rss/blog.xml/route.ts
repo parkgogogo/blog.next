@@ -1,5 +1,5 @@
+import { PostService } from "@/lib/posts";
 import RSS from "rss";
-import { getAllSlugs, getPost } from "@/lib/posts";
 
 export const dynamic = "force-static";
 
@@ -22,13 +22,9 @@ export async function GET() {
   });
 
   try {
-    const slugs = await getAllSlugs();
-
+    const posts = await PostService.getAllPosts();
     // Fetch each post and add it to the feed
-    for (const slug of slugs) {
-      const post = await getPost(slug);
-      if (!post) continue;
-
+    for (const post of posts) {
       feed.item({
         title: post.title,
         description: post.excerpt ?? "",

@@ -1,5 +1,5 @@
 import MarkdownRenderer from "@/components/MarkdownRenderer";
-import { fetchTestContent } from "@/lib/posts";
+import { fetchTestContent } from "./service";
 
 export default async function MarkdownTestPage() {
   let content = "";

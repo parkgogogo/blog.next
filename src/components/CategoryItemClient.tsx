@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Category, BlogPostMeta } from "@/types/blog";
+import { BlogPost, Category } from "@/types/blog";
 
 interface CategoryItemClientProps {
   category: Category;
@@ -36,7 +36,7 @@ export default function CategoryItemClient({
       {/* Posts in this category */}
       {hasPosts && (
         <div className="space-y-1">
-          {category.posts.map((post: BlogPostMeta) => (
+          {category.posts.map((post: BlogPost) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}

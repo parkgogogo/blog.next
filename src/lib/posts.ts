@@ -1,7 +1,5 @@
 import { Octokit } from "@octokit/rest";
 import matter from "gray-matter";
-import { readFile } from "fs/promises";
-import path from "path";
 import { BlogPost, Category } from "@/types/blog";
 
 interface GitHubContentItem {
@@ -139,16 +137,7 @@ async function processCategory(categoryPath: string): Promise<Category> {
     } else if (item.type === "file" && item.name.endsWith(".md")) {
       const post = await processMarkdownFile(item, categoryPath);
       if (post) {
-        category.posts.push({
-          slug: post.slug,
-          title: post.title,
-          date: post.date,
-          excerpt: post.excerpt,
-          tags: post.tags,
-          category: post.category,
-          categoryPath: post.categoryPath,
-          readingTime: post.readingTime,
-        });
+        category.posts.push(post);
       }
     }
   }
@@ -160,127 +149,59 @@ async function processCategory(categoryPath: string): Promise<Category> {
   return category;
 }
 
-async function findMarkdownFile(
-  slug: string,
-  basePath: string = POSTS_PATH
-): Promise<{ file: GitHubContentItem; categoryPath: string } | null> {
-  try {
-    const { data: contents } = await octokit.rest.repos.getContent({
-      owner: GITHUB_OWNER,
-      repo: GITHUB_REPO,
-      path: basePath,
-    });
+export const PostService = (() => {
+  let promise: Promise<Category>;
 
-    if (!Array.isArray(contents)) {
-      return null;
+  const check = () => {
+    if (!promise) {
+      promise = processCategory(POSTS_PATH);
     }
+  };
 
-    // First, check for markdown files in current directory
-    for (const item of contents) {
-      if (item.type === "file" && item.name === `${slug}.md`) {
-        return { file: item as GitHubContentItem, categoryPath: basePath };
-      }
-    }
+  const getRootCategory = async (): Promise<Category> => {
+    check();
+    return await promise;
+  };
 
-    // Then, recursively check subdirectories
-    for (const item of contents) {
-      if (item.type === "dir") {
-        const result = await findMarkdownFile(slug, item.path);
-        if (result) {
-          return result;
+  const getSlugs = async (): Promise<string[]> => {
+    check();
+    const category = await promise;
+    const slugs: string[] = [];
+
+    const getSlugFromCategories = (categories: Category[]) => {
+      for (const category of categories) {
+        slugs.push(...category.posts.map((post) => post.slug));
+        if (Array.isArray(category.subcategories)) {
+          getSlugFromCategories(category.subcategories);
         }
       }
-    }
+    };
 
-    return null;
-  } catch (error) {
-    console.error(`Error searching for file ${slug}:`, error);
-    return null;
-  }
-}
+    getSlugFromCategories([category]);
+    return slugs;
+  };
 
-/**
- * 获取测试页面的 markdown 内容
- * @returns Promise<string> - test.md 文件的内容
- */
-export async function fetchTestContent(): Promise<string> {
-  try {
-    // 构建文件路径，指向 public/test.md
-    const filePath = path.join(process.cwd(), "public", "test.md");
+  const getAllPosts = async (): Promise<BlogPost[]> => {
+    check();
+    const category = await promise;
+    const posts: BlogPost[] = [];
 
-    // 直接从文件系统读取文件内容
-    const content = await readFile(filePath, "utf-8");
-
-    return content;
-  } catch (error) {
-    console.error("Error fetching test content:", error);
-    throw error;
-  }
-}
-
-export const getAllSlugs = async (): Promise<string[]> => {
-  const category = await processCategory(POSTS_PATH);
-  const slugs: string[] = [];
-
-  function extractSlugsFromCategory(cat: Category) {
-    for (const post of cat.posts) {
-      slugs.push(post.slug);
-    }
-    if (cat.subcategories) {
-      for (const subcategory of cat.subcategories) {
-        extractSlugsFromCategory(subcategory);
+    const getPostFromCategories = (categories: Category[]) => {
+      for (const category of categories) {
+        posts.push(...category.posts);
+        if (Array.isArray(category.subcategories)) {
+          getPostFromCategories(category.subcategories);
+        }
       }
-    }
-  }
+    };
 
-  extractSlugsFromCategory(category);
-  return slugs;
-};
+    getPostFromCategories([category]);
+    return posts;
+  };
 
-export const getCategories = async () => {
-  return await processCategory(POSTS_PATH);
-};
-
-export async function getPost(slug: string): Promise<BlogPost | null> {
-  try {
-    const result = await findMarkdownFile(slug);
-
-    if (!result) {
-      return null;
-    }
-
-    const { file, categoryPath } = result;
-
-    const { data: fileContent } = await octokit.rest.repos.getContent({
-      owner: GITHUB_OWNER,
-      repo: GITHUB_REPO,
-      path: file.path,
-    });
-
-    if ("content" in fileContent) {
-      const content = Buffer.from(fileContent.content, "base64").toString(
-        "utf-8"
-      );
-      const { data: frontmatter, content: markdown } = matter(content);
-
-      const category = categoryPath.split("/").pop() || "uncategorized";
-
-      return {
-        slug,
-        title: frontmatter.title || slug,
-        date: frontmatter.date || (await getFileCreationDate(file.path)),
-        content: markdown,
-        excerpt: frontmatter.excerpt || markdown.slice(0, 200) + "...",
-        tags: frontmatter.tags || [],
-        readingTime: calculateReadingTime(markdown),
-        category,
-        categoryPath,
-      };
-    }
-
-    return null;
-  } catch (error) {
-    console.error(`Error fetching post ${slug}:`, error);
-    return null;
-  }
-}
+  return {
+    getCategory: getRootCategory,
+    getSlugs,
+    getAllPosts,
+  };
+})();
