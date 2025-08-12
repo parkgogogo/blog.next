@@ -42,6 +42,6 @@ export function convertAttachmentUrls(content: string): string {
         return `![${alt}](${getAttachmentUrl(attachmentPath)})`;
       }
       return match; // Return original if no match found
-    }
+    },
   );
 }
