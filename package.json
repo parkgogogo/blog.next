@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^1.0.7",
     "@octokit/rest": "^21.1.1",
     "@types/rss": "^0.0.32",
     "@wooorm/starry-night": "^3.8.0",
+    "ai": "^5.0.12",
     "date-fns": "^4.1.0",
     "github-markdown-css": "^5.8.1",
     "gray-matter": "^4.0.3",
