@@ -31,7 +31,7 @@ export async function GET() {
         feed.item({
           title: `Daily Words ${key}`,
           description: "",
-          url: "",
+          url: `${siteUrl}/words/${key}`,
           date: key,
           custom_elements: [
             {
