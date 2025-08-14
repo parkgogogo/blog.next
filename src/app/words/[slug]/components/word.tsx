@@ -17,7 +17,7 @@ export const Word: React.FC<{ text: string }> = ({ text }) => {
         byteArray[i] = byteCharacters.charCodeAt(i);
       }
 
-      const blob = new Blob([byteArray], { type: "audio/mp3" });
+      const blob = new Blob([byteArray], { type: "audio/wav" });
       const url = URL.createObjectURL(blob);
 
       const audio = new Audio();
@@ -34,14 +34,14 @@ export const Word: React.FC<{ text: string }> = ({ text }) => {
 
   return (
     <div>
-      <h3 onClick={handlePlay} className="flex items-center">
+      <h3 onClick={handlePlay} className="inline-block">
         {text}
-        {loading && (
-          <span className="ml-2">
-            <Loader className="animate-spin text-blue-500" size={16} />
-          </span>
-        )}
       </h3>
+      {loading && (
+        <div className="ml-2 inline-block">
+          <Loader className="animate-spin text-blue-500" size={16} />
+        </div>
+      )}
     </div>
   );
 };

@@ -17,8 +17,9 @@ export const ai_generateSpeech = async (text: string) => {
 
   const mp3 = await openai.audio.speech.create({
     model: "gpt-4o-mini-tts",
-    voice: "coral",
+    voice: "shimmer",
     input: text,
+    response_format: "wav",
   });
 
   return await mp3.arrayBuffer();
