@@ -58,7 +58,7 @@ const getLuLuWords = async () => {
 export const getExplanation = async (word: ILuluWord) => {
   return await ai_generateText({
     system: SYSTEM_PROMPT,
-    prompt: `word: ${word.id}, context: ${word.context.line || ""}`,
+    prompt: `word: ${word.uuid}, context: ${word.context.line || ""}`,
   });
 };
 
