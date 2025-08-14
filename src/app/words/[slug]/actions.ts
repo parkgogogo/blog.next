@@ -9,5 +9,7 @@ export const getExplanationAction = async (word: ILuluWord) => {
 };
 
 export const generateSpeech = async (text: string) => {
-  return ai_generateSpeech(text);
+  const arrayBuffer = await ai_generateSpeech(text);
+  const b = Buffer.from(arrayBuffer);
+  return b.toString("base64");
 };
