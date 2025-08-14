@@ -35,7 +35,7 @@ export default function HomePage() {
         </nav>
       </header>
       <main className="flex-grow flex items-center justify-center">
-        <div className="max-w-2xl w-full px-8 space-y-12 -translate-y-1/4">
+        <div className="max-w-2xl w-full px-8 space-y-12 lg:-translate-y-1/4">
           <section className="animate-fade-in-up">
             <h1 className="text-5xl font-bold font-display">
               Hey, I&apos;m <span className="text-accent-warm">Park</span>!
