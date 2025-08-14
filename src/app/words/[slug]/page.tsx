@@ -1,5 +1,6 @@
 import { WordsService } from "@/lib/words";
-import { ExplanationWrapper } from "@/app/words/[slug]/components/explanation-wrapper";
+import { ContextLine } from "@/app/words/[slug]/components/context-line";
+import { Word } from "@/app/words/[slug]/components/word";
 
 export default async function DailyWordsPage({
   params,
@@ -10,8 +11,6 @@ export default async function DailyWordsPage({
 
   const dailyWords = await WordsService.getWordsByDate(slug);
 
-  console.log(dailyWords);
-
   return (
     <div className="p-8">
       <div className="max-w-[900px] mx-auto">
@@ -21,13 +20,8 @@ export default async function DailyWordsPage({
         <div className="markdown-body">
           {dailyWords.map((word) => (
             <div key={word.uuid}>
-              <h3>{word.uuid}</h3>
-              <ExplanationWrapper word={word}>
-                <div
-                  className="inline-block"
-                  dangerouslySetInnerHTML={{ __html: word.context.line }}
-                />
-              </ExplanationWrapper>
+              <Word text={word.uuid} />
+              <ContextLine word={word} />
             </div>
           ))}
         </div>

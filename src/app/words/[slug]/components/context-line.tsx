@@ -1,14 +1,12 @@
 "use client";
 
-import React, { PropsWithChildren, useState } from "react";
+import React, { useState } from "react";
 import { ILuluWord } from "@/lib/words/types";
 import { Loader } from "lucide-react";
 import { getExplanationAction } from "@/app/words/[slug]/actions";
 import Markdown from "react-markdown";
 
-export const ExplanationWrapper: React.FC<
-  PropsWithChildren<{ word: ILuluWord }>
-> = ({ word, children }) => {
+export const ContextLine: React.FC<{ word: ILuluWord }> = ({ word }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [exp, setExp] = useState<string>("");
   const [expand, setExpand] = useState<boolean>(false);
@@ -33,7 +31,12 @@ export const ExplanationWrapper: React.FC<
 
   return (
     <>
-      <div onClick={handleGetExplanation}>{children}</div>
+      <div onClick={handleGetExplanation}>
+        <div
+          className="inline-block"
+          dangerouslySetInnerHTML={{ __html: word.context.line }}
+        />
+      </div>
       {loading && (
         <Loader className="animate-spin mt-2 text-blue-500" size={16}></Loader>
       )}

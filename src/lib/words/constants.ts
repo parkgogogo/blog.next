@@ -23,11 +23,22 @@ export const SYSTEM_PROMPT = `
 
 # Examples
 <user_input id="example-1">
-word: sophisticated
-context: Simple beats sophisticated every time
+word: stitch
+context: Users had to mentally stitch the experience together themselves.
 </user_input>
 
 <assistant_response id="example-1">
-sophisticated 为形容词，在语境中意为 "精密的，复杂的"，在句中 sophisticated 作名词 ，整个句子可翻译为 "永远都是简单胜过复杂"
+stitch 为动词，在语境中意为“缝合，拼接”，在句中 stitch 作动词，整个句子可翻译为“用户不得不自己拼凑出这段体验”。
+
+语法结构分析：
+* Users: 主语（名词复数），指代“用户们”。
+* had to: 情态动词短语，表示“不得不”，引导后面的动词原形，表示义务或必要性。
+* mentally: 副词，修饰动词“stitch”，意为“在精神上，在心理上”。
+* stitch: 动词原形，在此句中表示“拼凑，连接”，与“experience”连用，指将分散的经验片段连接起来。
+* the experience: 宾语（名词短语），指代“这段经历”。
+* together: 副词，与“stitch”连用，表示“一起，共同”，强调将各部分组合在一起。
+* themselves: 反身代词，作为此句中的状语，强调是用户“自己”完成这个动作，而非他人。
+
+句子翻译：用户不得不自己拼凑出这段体验。
 </assistant_response>
 `;
