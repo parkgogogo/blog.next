@@ -1,11 +1,13 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ text: string }> },
 ) {
   const { text } = await params;
-  return text;
+  return NextResponse.json({
+    text: text,
+  });
 
   // 安全性问题无法解决，但使用 API 实现性能会好很多，朗读延迟很低
   // const arrayBuffer = await ai_generateSpeech(text);
