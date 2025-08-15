@@ -20,7 +20,7 @@ export default async function DailyWordsPage({
         <div className="markdown-body">
           {dailyWords.map((word) => (
             <div key={word.uuid}>
-              <Word text={word.uuid} />
+              <Word text={word.uuid} phon={word.phon} />
               <ContextLine word={word} />
             </div>
           ))}

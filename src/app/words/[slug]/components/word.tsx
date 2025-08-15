@@ -3,8 +3,12 @@
 import { generateSpeech } from "@/app/words/[slug]/actions";
 import { useRef, useState } from "react";
 import { Loader } from "lucide-react";
+import styles from "./index.module.css";
 
-export const Word: React.FC<{ text: string }> = ({ text }) => {
+export const Word: React.FC<{ text: string; phon: string }> = ({
+  text,
+  phon,
+}) => {
   const [loading, setLoading] = useState(false);
   const audioUrlRef = useRef<string | null>(null);
 
@@ -32,8 +36,8 @@ export const Word: React.FC<{ text: string }> = ({ text }) => {
   };
 
   return (
-    <div>
-      <h3 onClick={handlePlay}>
+    <div className="mb-4">
+      <h3 className="mb-2" onClick={handlePlay}>
         <span>{text}</span>
         {loading && (
           <span className="ml-1">
@@ -44,6 +48,10 @@ export const Word: React.FC<{ text: string }> = ({ text }) => {
           </span>
         )}
       </h3>
+      <div
+        className={`flex gap-2 text-sm ${styles.phon}`}
+        dangerouslySetInnerHTML={{ __html: phon }}
+      ></div>
     </div>
   );
 };
