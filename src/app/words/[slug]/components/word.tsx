@@ -42,7 +42,7 @@ export const Word: React.FC<{ text: string; phon: string }> = ({
         {loading && (
           <span className="ml-1">
             <Loader
-              className="text-blue-500 inline-block leading-6 pb-0.5"
+              className="text-blue-500 inline-block leading-6 pb-0.5 animate-spin"
               size={16}
             />
           </span>
