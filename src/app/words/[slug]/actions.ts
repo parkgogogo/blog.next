@@ -10,10 +10,10 @@ import { redis } from "@/lib/redis";
  * @param word
  */
 export const getExplanationAction = async (word: ILuluWord) => {
-  const checkRedisResult = await redis.get(`EXP_${word}`);
+  const checkRedisResult = await redis.get(`EXP_${word.uuid}`);
   if (checkRedisResult) return checkRedisResult;
   const result = await getExplanation(word);
-  redis.set(`EXP_${word}`, result);
+  redis.set(`EXP_${word.uuid}`, result);
   return getExplanation(word);
 };
 
