@@ -6,6 +6,8 @@ import {
 import type { ILuluWord, IResponse } from "./types";
 import { format } from "date-fns";
 import { ai_generateText } from "@/lib/ai";
+import { REDIS_KEYS } from "@/constants/redis";
+import { redis } from "@/lib/redis";
 
 /**
  * 获取生词本总数
@@ -47,6 +49,11 @@ const getLuLuWords = async () => {
     const parsedResult: IResponse = await result.json();
 
     if (Array.isArray(parsedResult.data)) {
+      // sync to redis;
+      redis.set(
+        REDIS_KEYS.ALL_WORDS,
+        parsedResult.data.map((word) => word.uuid).join(","),
+      );
       return parsedResult.data;
     }
     return [];

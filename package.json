@@ -25,6 +25,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0",
+    "redis": "^5.8.1",
     "rehype-starry-night": "^2.2.0",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
